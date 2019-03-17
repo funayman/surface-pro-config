@@ -20,6 +20,6 @@ ArchLabs Linux forces you to select a bootloader to install. Choose rEFInd.
 
 ### Post Install
 
-## Step 4: Clean Up UEFI
+## Step 4: Clean Up UEFI and Configuring rEFInd
 
 ## Step 5: Controlling Secure Boot
