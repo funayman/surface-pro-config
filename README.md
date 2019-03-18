@@ -185,27 +185,18 @@ $ cp scripts/mkinitcpio-config /etc/mkinitcpio.d/linux.preset
 
 Lastly, we need to add in [pacman hooks](https://wiki.archlinux.org/index.php/Pacman#Hooks) to sign (more on that later) and move `vmlinuz-linuz` to the `/boot/EFI/arch` directory.
 
-```ini
-[Trigger]
-Operation = Install
-Operation = Upgrade
-Type = Package
-Target = linux
-
-[Action]
-Description = Move kernel to new location after install
-When = PostTransaction
-Exec = /usr/bin/mv /boot/vmlinuz-linux /boot/EFI/arch/vmlinuz-linux
+```bash
+$ sudo cp scripts/80-linux-move.hook /usr/share/libalpm/hooks/.
 ```
 Confirm its working
 
 ```bash
-$ sudo pacman -S linux
+$ sudo pacman -Sy linux
 
---- snip ---
+### output should not have any errors ###
 
 $ ls /boot/EFI/arch
-vmlinuz-linux initrd.img
+initramfs-linux-fallback.img initramfs-linux.img vmlinuz-linux
 ```
 
 ## Step 4: Clean Up UEFI and Configuring rEFInd
