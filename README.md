@@ -200,7 +200,7 @@ Exec = /usr/bin/mv /boot/vmlinuz-linux /boot/EFI/arch/vmlinuz-linux
 Confirm its working
 
 ```bash
-$ sudo pacman --force -S linux
+$ sudo pacman -S linux
 
 --- snip ---
 
