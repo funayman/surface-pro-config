@@ -23,6 +23,41 @@ Use your RECOVERY USB to reinstall Windows. Select `Troubleshoot` -> `Install fr
 After you've gone through the installation process, make sure you aquire all the latest updates. This can take A LOOOONG TIME.
 
 ## Step 1: Windows Side of Things
+### Resize Windows Partition
+Depending on your needs. I will be tripple booting (Win + Arch and Kali Linux)
+
+#### Removing Extra Partitions
+Chances are you will see a partition titled: `Healthy (Recovery Partition)`
+The Disk Management tool will not allow you to remove it.
+If this is the case, close the Disk Management tool and open a Command Prompt as Administrator and use `DISKPART` to remove the partition.
+Otherwise, skip this step.
+
+```dos
+> diskpart
+list volume
+## look for the Volume for the Healthy (Recovery Partition)
+
+select volume X
+delete volume override
+```
+
+Reopen the Disk Management tool and have Windows reallocate the space the empty space.
+
+Next is to create the following partitions (formated as exFAT, it will be changed during the Linux installations)
+
+Kali 40GB
+Archbang 40GB
+Swap 8GB
+
+Shrink Windows partition down to 90112MB
+
+to create partitions:
+ - New Simple Volume
+ - Size: 40960
+ - Do not assign a letter
+ - Format: exFAT Label: "KALI" or "ARCH"
+
+Leave the remaining unallocated 8GB for `swap` later.
 
 ## Step 2: Kali Linux
 go through the usual install process until partition section
