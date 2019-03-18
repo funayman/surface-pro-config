@@ -11,7 +11,7 @@ You'll need the following:
  - Windows Recovery USB (*optional*)
  - USB with Microsoft Surface Data Eraser (*optional*)
 
-First things first, [boot into BIOS/UEFI](https://support.microsoft.com/en-us/help/4023532/surface-how-do-i-use-the-bios-uefi) and disable Secure Boot and change the boot order to `USB -> HDD`.
+First things first, [boot into BIOS/UEFI](https://support.microsoft.com/en-us/help/4023532/surface-how-do-i-use-the-bios-uefi) and disable Secure Boot and change the boot order to `[USB -> SSD]`.
 
 Insert the microSD Card and format it (this will be `/home` for the Linux paritions and will be reformatted later)
 
