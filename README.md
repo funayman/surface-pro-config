@@ -52,16 +52,25 @@ DISKPART> delete volume override
 Reopen the Disk Management tool and extend the Windows partition to reallocate the space the empty space. You could leave it unallocated, but I prefer reallocating and then shrinking the drive.
 
 ### Setup Disk Partition Layout
-Next is to create the partition layout for your drive. Adjust to fit your needs, my final planned layout will look like:
+Next is to create the partition layout for your drive. Adjust to fit your needs, my final layout ended up being:
 
-| os | size |
-|--------|------|
-| Windows | 150GB |
-| Kali | 40GB |
-| Archbang | 40GB |
-| Swap | 8GB |
+**Internal Hard Drive**
 
-Shrink Windows partition down to 90112 MB
+| Device | OS | Size | Mount Point |
+|----|----|----|----|
+| `/dev/sda1` | EFI System Partition | 200 MB | `/boot` |
+| `/dev/sda3` | Windows | 150 GB | `C:` |
+| `/dev/sda4` | Kali | 40 GB | `/` |
+| `/dev/sda5` | ArchLabs | 40 GB | `/` |
+| `/dev/sda6` | Swap | 8 GB | `swap` |
+
+**microSD Card**
+
+| Device | OS | Size | Mount Point |
+|----|----|----|----|
+| `/dev/sdc1` | N/A | 128 GB | `/home` |
+
+Shrink the Windows partition down to 90112 MB
 
 Create two partitions for Kali and ArchLabs:
  - New Simple Volume
@@ -69,7 +78,7 @@ Create two partitions for Kali and ArchLabs:
  - Do not assign a letter
  - Format: exFAT Label: "KALI" or "ARCH"
 
-Leave the remaining unallocated 8GB for `swap` later.
+Leave the remaining unallocated 8GB for `swap`. That will be created during the Kali installation.
 
 ## Step 2: Kali Linux
 Insert the Kali Linux USB and boot into the installer.
@@ -133,11 +142,26 @@ Post kernel install script
 Remove GRUB
 
 ## Step 3: ArchLabs Linux
-ArchLabs, as of 2019.01.20, does not allow the root partition to be formatted with `btrfs`. You can choose
-### Bootloader
-ArchLabs Linux forces you to select a bootloader to install. Choose rEFInd.
+ArchLabs, as of 2019.01.20, does not allow the root partition to be formatted with `btrfs`. You can choose `ext4` and then try to convert it to `btrfs` post install, but thats on your own.
 
-### Kernel Management
+### Installation
+I wont go over how to install ArchLabs as the developers have made the installation process very easy to figure out. There are a couple of options during the installation process that need to be addressed.
+
+#### Mount and Format Partitions
+When selecting `/`, as mentioned before, `btrfs` was not an option so I opted for `ext4` instead.
+It will as you what to use as a `swap` partition, select the previous partition you selected for Kali Linux.
+Finally, you'll have a chance select other mount points. Select `/dev/sdc1/` (or whatever your microSD card device is) and mount it as `/home`. **DO NOT FORMAT THE microSD CARD**
+
+##### Bootloader
+ArchLabs Linux allows you to choose a bootloader of your choice. Since the end goal is rEFInd, select it and have it install for us.
+
+#### Create User and Set Passwords
+When choosing a username, **do not** use the same one that is used for Kali (if you created a regular user on Kali). Make sure to have different user names on each Linux installation. Otherwise it will cause conflicts with config files and software versions.
+
+### Post Installation
+Once rebooted, you should be greeted with the default config for the rEFInd bootloader. You'll notice that Kali Linux is not listed on there. Thats fine, we will fix everything in the following section.
+
+#### Kernel Management
 ```ini
 [Trigger]
 Operation = Install
