@@ -139,7 +139,12 @@ root@kali:~# mkdir -pv /boot/efi/EFI/kali
 
 Post kernel install script
 
-Remove GRUB
+#### Remove Grub
+The system will be unbootable until another bootloader is installed, but that will be taken care of come ArchLabs.
+```
+root@kali:~# apt purge grub*
+root@kali:~# apt autoremove --purge
+```
 
 ## Step 3: ArchLabs Linux
 ArchLabs, as of 2019.01.20, does not allow the root partition to be formatted with `btrfs`. You can choose `ext4` and then try to convert it to `btrfs` post install, but thats on your own.
