@@ -211,3 +211,13 @@ initramfs-linux-fallback.img initramfs-linux.img vmlinuz-linux
 
 ## Step 5: Controlling Secure Boot
 
+Copy the `KeyTool.efi` to the rEFInd `tools` directory
+```bash
+# Kali Linux
+root@kali:~$ cp /usr/lib/efitools/x86_64-linux-gnu/KeyTool.efi /boot/efi/EFI/tools/.
+```
+```bash
+# ArchLabs Linux
+$ sudo cp /usr/share/efitools/efi/KeyTool.efi /boot/EFI/tools/.
+```
+
