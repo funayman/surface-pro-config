@@ -162,7 +162,7 @@ I wont go over how to install ArchLabs as the developers have made the installat
 
 #### Mount and Format Partitions
 When selecting `/`, as mentioned before, `btrfs` was not an option so I opted for `ext4` instead.
-It will as you what to use as a `swap` partition, select the previous partition you selected for Kali Linux.
+The installer will ask what to use as a `swap` partition, select the previous partition you selected for Kali Linux.
 Finally, you'll have a chance select other mount points. Select `/dev/sdc1/` (or whatever your microSD card device is) and mount it as `/home`. **DO NOT FORMAT THE microSD CARD**
 
 ##### Bootloader
