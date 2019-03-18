@@ -106,7 +106,10 @@ The installation process should continue as normal.
 Restart! You should be greeted with the Kali's GRUB interface. Start Kali and proceede with the post install setup.
 
 ### Post Install
-Log in as `root` and upgrade the system.
+Log in as `root`, upgrade the system, and install the `efitools` and `sbsigntool` packages.
+```bash
+root@kali:~# apt update && apt upgrade --yes && apt install efitools sbsigntool
+```
 
 #### Change root User Home
 Open a terminal and copy the `/root` folder to the `/home` directory.
@@ -170,6 +173,11 @@ When choosing a username, **do not** use the same one that is used for Kali (if 
 
 ### Post Installation
 Once rebooted, you should be greeted with the default config for the rEFInd bootloader. You'll notice that Kali Linux is not listed on there. Thats fine, we will fix everything in the following section.
+
+Login and update the system (should be up to date from install), and install the `efitools` and `sbsigntools` packages
+```bash
+$ sudo pacman -Syyu efitools sbsigntools
+```
 
 #### Kernel Management
 Similar to the setup for Kali, the linux kernel needs to be move/organized in order to not conflict with other distributions.
