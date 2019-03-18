@@ -172,6 +172,19 @@ When choosing a username, **do not** use the same one that is used for Kali (if 
 Once rebooted, you should be greeted with the default config for the rEFInd bootloader. You'll notice that Kali Linux is not listed on there. Thats fine, we will fix everything in the following section.
 
 #### Kernel Management
+Similar to the setup for Kali, the linux kernel needs to be move/organized in order to not conflict with other distributions.
+```
+$ sudo mkdir -pv /boot/EFI/arch
+$ sudo mv /boot/vmlinuz* /boot/initramfs* /boot/intel-ucode.img /boot/EFI/arch/.
+```
+
+Next, change the default locations for when `mkinitcpio` is called. You can manually change the location yourself or copy the config file in the `scripts` folder
+```bash
+$ cp scripts/mkinitcpio-config /etc/mkinitcpio.d/linux.preset
+```
+
+Lastly, we need to add in [pacman hooks](https://wiki.archlinux.org/index.php/Pacman#Hooks) to sign (more on that later) and move `vmlinuz-linuz` to the `/boot/EFI/arch` directory.
+
 ```ini
 [Trigger]
 Operation = Install
@@ -182,7 +195,7 @@ Target = linux
 [Action]
 Description = Move kernel to new location after install
 When = PostTransaction
-Exec = mv /boot/vmlinuz-linux /boot/EFI/arch/vmlinuz-linux
+Exec = /usr/bin/mv /boot/vmlinuz-linux /boot/EFI/arch/vmlinuz-linux
 ```
 Confirm its working
 
@@ -198,3 +211,4 @@ vmlinuz-linux initrd.img
 ## Step 4: Clean Up UEFI and Configuring rEFInd
 
 ## Step 5: Controlling Secure Boot
+
