@@ -59,7 +59,7 @@ Next is to create the partition layout for your drive. Adjust to fit your needs,
 | Device | OS | Size | Mount Point |
 |----|----|----|----|
 | `/dev/sda1` | EFI System Partition | 200 MB | `/boot` |
-| `/dev/sda3` | Windows | 150 GB | `C:` |
+| `/dev/sda3` | Windows | 160 GB | `C:` |
 | `/dev/sda4` | Kali | 40 GB | `/` |
 | `/dev/sda5` | ArchLabs | 40 GB | `/` |
 | `/dev/sda6` | Swap | 8 GB | `swap` |
