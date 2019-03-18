@@ -110,21 +110,21 @@ Log in as `root` and upgrade the system.
 
 #### Change root User Home
 Open a terminal and copy the `/root` folder to the `/home` directory.
-```bash
-cp -r /root /home/.
+```
+root@kali:~# cp -r /root /home/.
 ```
 
 Now we need to tell the system that the root users home directory has changed.
 
-```bash
-sudoedit /etc/passwd
+```
+root@kali:~# sudoedit /etc/passwd
 ```
 On the first line should be the root user's information, change `/root` to `/home/root`
 
 Log out and log in to confirm everything is working.
 Open a terminal and type `pwd` it should now show `/home/root`
-```bash
-$ pwd
+```
+root@kali:~# pwd
 /home/root
 ```
 
@@ -133,8 +133,8 @@ Kali, as of the 2019.1a release, will mount your `/boot` partition at `/boot/efi
 
 We will need to keep the kernel for each installed Linux system organized as to not override each other or cause conflicts. A simple way is to keep a folder for each OS and store its associated files in each.
 
-```bash
-$ mkdir -pv /boot/efi/EFI/kali
+```
+root@kali:~# mkdir -pv /boot/efi/EFI/kali
 ```
 
 Post kernel install script
