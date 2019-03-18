@@ -137,7 +137,12 @@ We will need to keep the kernel for each installed Linux system organized as to 
 root@kali:~# mkdir -pv /boot/efi/EFI/kali
 ```
 
-Post kernel install script
+To ensure that the kernel is kept up to date, copy `zz-sign-and-move-kernel` to the `postinst.d` folder 
+```bash
+cp scripts/zz-sign-and-move-kernel /etc/kernel/postinst.d/zz-sign-and-move-kernel
+chmod 755 /etc/kernel/postinst.d/zz-sign-and-move-kernel
+```
+This will sign the new kernel with your MOK (more on that later) and place it in the correct directory.
 
 #### Remove Grub
 The system will be unbootable until another bootloader is installed, but that will be taken care of come ArchLabs.
