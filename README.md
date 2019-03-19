@@ -142,7 +142,7 @@ root@kali:~# mkdir -pv /boot/efi/EFI/kali
 
 To ensure that the kernel is kept up to date, copy `zz-sign-and-move-kernel` to the `postinst.d` folder 
 ```shellsession
-root@kali:~# cp scripts/zz-sign-and-move-kernel /etc/kernel/postinst.d/zz-sign-and-move-kernel
+root@kali:~# cp config/zz-sign-and-move-kernel /etc/kernel/postinst.d/zz-sign-and-move-kernel
 root@kali:~# chmod 755 /etc/kernel/postinst.d/zz-sign-and-move-kernel
 ```
 This will sign the new kernel with your MOK (more on that later) and place it in the correct directory.
@@ -186,15 +186,15 @@ $ sudo mkdir -pv /boot/EFI/arch
 $ sudo mv /boot/vmlinuz* /boot/initramfs* /boot/intel-ucode.img /boot/EFI/arch/.
 ```
 
-Next, change the default locations for when `mkinitcpio` is called. You can manually change the location yourself or copy the config file in the `scripts` folder
+Next, change the default locations for when `mkinitcpio` is called. You can manually change the location yourself or copy the config file in the `config` folder
 ```shellsession
-$ cp scripts/mkinitcpio-config /etc/mkinitcpio.d/linux.preset
+$ cp config/mkinitcpio-config /etc/mkinitcpio.d/linux.preset
 ```
 
 Lastly, we need to add in [pacman hooks](https://wiki.archlinux.org/index.php/Pacman#Hooks) to sign (more on that later) and move `vmlinuz-linuz` to the `/boot/EFI/arch` directory.
 
 ```shellsession
-$ sudo cp scripts/80-linux-move.hook /usr/share/libalpm/hooks/.
+$ sudo cp config/80-linux-move.hook /usr/share/libalpm/hooks/.
 ```
 Confirm its working
 
@@ -219,7 +219,7 @@ Save Old Key Files
 root@kali:~# efi-readvar -v PK -o old_PK.esl
 root@kali:~# efi-readvar -v KEK -o old_KEK.esl
 root@kali:~# efi-readvar -v db -o old_db.esl
-root@kali:~# efi-readvar -v dbx -o old_dbx.esl 
+root@kali:~# efi-readvar -v dbx -o old_dbx.esl
 ```
 
 SCRIPT CREATES KEYS
@@ -229,7 +229,7 @@ Compound Files w/ MSFTの
 root@kali:~# cat old_KEK.esl KEK.esl > compound_KEK.esl
 root@kali:~# cat old_db.esl db.esl > compound_db.esl
 root@kali:~# sign-efi-sig-list -k PK.key -c PK.crt KEK compound_KEK.esl compound_KEK.auth
-root@kali:~# sign-efi-sig-list -k KEK.key -c KEK.crt db compound_db.esl compound_db.auth 
+root@kali:~# sign-efi-sig-list -k KEK.key -c KEK.crt db compound_db.esl compound_db.auth
 ```
 
 REBOOT -> REMOVE OLD KEYS -> REBOOT

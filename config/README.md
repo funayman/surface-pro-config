@@ -1,6 +1,6 @@
-# scripts
+# config
 
-handy scripts for smooth installation
+handy configuration files for smooth installation
 
 ```bash
 # Kali Linux Post Kernel Install
