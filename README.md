@@ -196,7 +196,7 @@ Lastly, we need to add in [pacman hooks](https://wiki.archlinux.org/index.php/Pa
 ```shellsession
 $ sudo cp config/80-linux-move.hook /usr/share/libalpm/hooks/.
 ```
-Confirm its working
+Confirm its working by reinstalling the `linux` package.
 
 ```shellsession
 $ sudo pacman -Sy linux
@@ -207,9 +207,77 @@ $ ls /boot/EFI/arch
 initramfs-linux-fallback.img initramfs-linux.img vmlinuz-linux
 ```
 
+Don't restart your computer yet, there are still a few issues with rEFInd that need to be taken care of.
+
 ## Step 4: Clean Up UEFI and Configuring rEFInd
 
-## Step 5: Controlling Secure Boot (*optional*)
+rEFInd is great and finding and displaying bootable images. Unfortuantely, the current set up doesn't allow for our Linux operating systems to load properly. You'll notice if you restarted your Surface and tried to launch ArchLabs that you are dropped into a terminal. If this happens you'll have to mount the drive manually.
+
+```shell
+# make sure to choose your correct device! 
+mount /dev/sda5 /new_root
+exit
+```
+And it should continue to boot as normal.
+
+### Cleaning Up UEFI and Boot Order
+```shellsession
+$ sudo efibootmrg
+```
+
+Make sure to remove any unnecessary bootloaders. I recommend keeping it to a minimum. I prefer to have USB first and foremost, then rEFInd, and if all else fails, make sure that the Windows Bootloader stays intact and I can get into my Windows system. For example, if you have `kali`, `grub`, etc, you can delete them using the `efibootmgr` command. Replace `XXXX` with the number of the bootloader from the output above.  
+
+```shellsession
+$ efibootmgr -B -b XXXX
+```
+
+### Configuring rEFInd
+We need to manually add in the operating systems along with their respective loaders. `refind.conf` has a lot of templates at the bottom to choose from. I recommend starting out with them and then modifying it to match your system.
+
+```nginx
+menuentry "Windows" {
+    loader \EFI\Microsoft\Boot\bootmgfw.efi
+    enabled
+}
+
+menuentry "Arch Linux" {
+    loader   /EFI/arch/vmlinuz-linux
+    initrd   /EFI/arch/initramfs-linux.img
+    options  "root=PARTUUID=f6a9bd85-78b2-4d8c-a852-3a1ea3a86fc7 rw add_efi_memmap"
+    submenuentry "Boot using fallback initramfs" {
+        initrd /EFI/archinitramfs-linux-fallback.img
+    }
+    submenuentry "Boot to terminal" {
+        add_options "systemd.unit=multi-user.target"
+    }
+    enabled
+}
+
+menuentry "Kali Linux" {
+    loader   /EFI/kali/vmlinuz
+    initrd   /EFI/kali/initrd.img
+    options  "root=PARTUUID=6eeac1ab-1bcb-4ef0-a36c-a256b4e2f197 rw add_efi_memmap"
+    enabled
+}
+```
+
+For Arch and Kali, you will need to specify the root device and specify the `PARTUUID` in entry's `options` similar to the config shown above.
+
+To find your `PARTUUID` values, use the `lsblk` command
+```shellsession
+$ lsblk -o NAME,SIZE,TYPE,MOUNTPOINT,PARTUUID
+```
+
+There are a lot of way to [customize rEFInd](http://www.rodsbooks.com/refind/configfile.html) and if you want to spice it up, I recommend going for it. There are also a [few themes](https://github.com/search?q=rEFInd+theme) out there you can use as well. I have my own custom setup at [my github page](https://github.com/funayman/surface-pro-config).
+
+---
+
+Restart and make sure you can boot into all of your operating systems.
+
+You should have a fully functioning system.
+
+
+## Step 5: Enabling Secure Boot (*optional*)
 If you're happy without Secure Boot, you can skip this step. The following will erase all keys on your system, create your own keys, and use them to sign all the binaries needed to keep your computer running.
 
 You can do this on either Linux distro, but I did everything from Kali.
@@ -228,6 +296,9 @@ Go into BIOS/UEFI and delete keys and enable Secure Boot (this is Setup Mode).
 
 Before installing the keys, the `secure-boot-install-keys.sh` script has hard-coded locations for the kernels. If you've been making changes along the way, adjust the following accordingly:
 ```shell
+EPS=/dev/sda1
+MOUNT=/mnt
+
 # edit to your needs
 declare -a BINARIES=(
 "$MOUNT/EFI/kali/vmlinuz"
@@ -241,6 +312,11 @@ Then run the script to install your keys and sign your kernels.
 ```shellsession
 root@kali:~# ./scripts/secure-boot-install-keys.sh
 ```
+
+If you're interested in how the scripts work, what they do, or where they were derived from, check out the following resources:
+- [Sakaki's EFI Install Guide/Configuring Secure Boot](https://wiki.gentoo.org/wiki/Sakaki%27s_EFI_Install_Guide/Configuring_Secure_Boot)
+- [Arch Wiki: Secure Boot](https://wiki.archlinux.org/index.php/Secure_Boot)
+- [Managing EFI Boot Loaders for Linux: Controlling Secure Boot](http://www.rodsbooks.com/efi-bootloaders/controlling-sb.html#creatingkeys)
 
 ### Confirmation
 Once you reboot, you should have Secure Boot Enabled along with the ability to boot into all of your OSes!
