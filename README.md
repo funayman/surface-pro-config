@@ -39,7 +39,7 @@ The Disk Management tool will not allow you to remove it.
 If this is the case, close the Disk Management tool and open a Command Prompt as Administrator and use `DISKPART` to remove the partition.
 Otherwise, skip this step.
 
-```dos
+```powershell
 C:\Windows\system32> diskpart
 
 DISKPART> list volume
@@ -107,26 +107,26 @@ Restart! You should be greeted with the Kali's GRUB interface. Start Kali and pr
 
 ### Post Install
 Log in as `root`, upgrade the system, and install the `efitools` and `sbsigntool` packages.
-```bash
+```shellsession
 root@kali:~# apt update && apt upgrade --yes && apt install efitools sbsigntool
 ```
 
 #### Change root User Home
 Open a terminal and copy the `/root` folder to the `/home` directory.
-```
+```shellsession
 root@kali:~# cp -r /root /home/.
 ```
 
 Now we need to tell the system that the root users home directory has changed.
 
-```
+```shellsession
 root@kali:~# sudoedit /etc/passwd
 ```
 On the first line should be the root user's information, change `/root` to `/home/root`
 
 Log out and log in to confirm everything is working.
 Open a terminal and type `pwd` it should now show `/home/root`
-```
+```shellsession
 root@kali:~# pwd
 /home/root
 ```
@@ -136,20 +136,20 @@ Kali, as of the 2019.1a release, will mount your `/boot` partition at `/boot/efi
 
 We will need to keep the kernel for each installed Linux system organized as to not override each other or cause conflicts. A simple way is to keep a folder for each OS and store its associated files in each.
 
-```
+```shellsession
 root@kali:~# mkdir -pv /boot/efi/EFI/kali
 ```
 
 To ensure that the kernel is kept up to date, copy `zz-sign-and-move-kernel` to the `postinst.d` folder 
-```bash
-cp scripts/zz-sign-and-move-kernel /etc/kernel/postinst.d/zz-sign-and-move-kernel
-chmod 755 /etc/kernel/postinst.d/zz-sign-and-move-kernel
+```shellsession
+root@kali:~# cp scripts/zz-sign-and-move-kernel /etc/kernel/postinst.d/zz-sign-and-move-kernel
+root@kali:~# chmod 755 /etc/kernel/postinst.d/zz-sign-and-move-kernel
 ```
 This will sign the new kernel with your MOK (more on that later) and place it in the correct directory.
 
 #### Remove Grub
 The system will be unbootable until another bootloader is installed, but that will be taken care of come ArchLabs.
-```
+```shellsession
 root@kali:~# apt purge grub*
 root@kali:~# apt autoremove --purge
 ```
@@ -175,30 +175,30 @@ When choosing a username, **do not** use the same one that is used for Kali (if 
 Once rebooted, you should be greeted with the default config for the rEFInd bootloader. You'll notice that Kali Linux is not listed on there. Thats fine, we will fix everything in the following section.
 
 Login and update the system (should be up to date from install), and install the `efitools` and `sbsigntools` packages
-```bash
+```shellsession
 $ sudo pacman -Syyu efitools sbsigntools
 ```
 
 #### Kernel Management
 Similar to the setup for Kali, the linux kernel needs to be move/organized in order to not conflict with other distributions.
-```
+```shellsession
 $ sudo mkdir -pv /boot/EFI/arch
 $ sudo mv /boot/vmlinuz* /boot/initramfs* /boot/intel-ucode.img /boot/EFI/arch/.
 ```
 
 Next, change the default locations for when `mkinitcpio` is called. You can manually change the location yourself or copy the config file in the `scripts` folder
-```bash
+```shellsession
 $ cp scripts/mkinitcpio-config /etc/mkinitcpio.d/linux.preset
 ```
 
 Lastly, we need to add in [pacman hooks](https://wiki.archlinux.org/index.php/Pacman#Hooks) to sign (more on that later) and move `vmlinuz-linuz` to the `/boot/EFI/arch` directory.
 
-```bash
+```shellsession
 $ sudo cp scripts/80-linux-move.hook /usr/share/libalpm/hooks/.
 ```
 Confirm its working
 
-```bash
+```shellsession
 $ sudo pacman -Sy linux
 
 ### output should not have any errors ###
@@ -209,15 +209,45 @@ initramfs-linux-fallback.img initramfs-linux.img vmlinuz-linux
 
 ## Step 4: Clean Up UEFI and Configuring rEFInd
 
-## Step 5: Controlling Secure Boot
+## Step 5: Controlling Secure Boot (*optional*)
+If you're happy without Secure Boot, you can skip this step. The following will erase all keys on your system, create your own keys, and use them to sign all the binaries needed to keep your computer running.
 
-Copy the `KeyTool.efi` to the rEFInd `tools` directory
-```bash
-# Kali Linux
-root@kali:~$ cp /usr/lib/efitools/x86_64-linux-gnu/KeyTool.efi /boot/efi/EFI/tools/.
-```
-```bash
-# ArchLabs Linux
-$ sudo cp /usr/share/efitools/efi/KeyTool.efi /boot/EFI/tools/.
+You can do this on either Linux distro, but I did everything from Kali.
+
+Save Old Key Files
+```shellsession
+root@kali:~# efi-readvar -v PK -o old_PK.esl
+root@kali:~# efi-readvar -v KEK -o old_KEK.esl
+root@kali:~# efi-readvar -v db -o old_db.esl
+root@kali:~# efi-readvar -v dbx -o old_dbx.esl 
 ```
 
+SCRIPT CREATES KEYS
+
+Compound Files w/ MSFTの
+```shellsession
+root@kali:~# cat old_KEK.esl KEK.esl > compound_KEK.esl
+root@kali:~# cat old_db.esl db.esl > compound_db.esl
+root@kali:~# sign-efi-sig-list -k PK.key -c PK.crt KEK compound_KEK.esl compound_KEK.auth
+root@kali:~# sign-efi-sig-list -k KEK.key -c KEK.crt db compound_db.esl compound_db.auth 
+```
+
+REBOOT -> REMOVE OLD KEYS -> REBOOT
+
+ADD KEYS with `efi-updatevar`
+
+SIGN KERNELS
+
+### Add Keys
+Launch KeyTool, you should see on your screen `Platform is in Setup Mode`.
+
+The Allowed Signatures Database (db) -> SYSTEM/keys/DB.esl
+The Key Exchange Key Database (KEK) -> SYSTEM/keys/KEK.esl
+The Platform Key (PK) -> SYSTEM/keys/PK.auth
+
+### Confirmation
+Once you reboot, you should have Secure Boot Enabled along with the ability to boot into all of your OSes!
+
+If you go into the BIOS/UEFI, you should see "Secure Boot Enabled".
+
+### Ensuring Kernel Updates Get Signed
