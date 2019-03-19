@@ -76,10 +76,12 @@ Next is to create the partition layout for your drive. Adjust to fit your needs,
 To match the layout in the table above, the amount of space to shrink the Windows partition down by is 90112 MB
 
 Create two partitions for Kali and ArchLabs:
- - New Simple Volume
- - Size: 40960
- - Do not assign a letter
- - Format: exFAT Label: "KALI" or "ARCH"
+- New Simple Volume
+- Simple volume size in MB: 40960
+- Do not assign a drive letter or drive path
+- Format Partition
+  - **File system**: exFAT
+  - **Volume Label**: "KALI" or "ARCH"
 
 Leave the remaining unallocated 8GB for `swap`. That will be created during the Kali installation.
 
