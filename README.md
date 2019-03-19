@@ -69,7 +69,7 @@ Next is to create the partition layout for your drive. Adjust to fit your needs,
 
 | Device | OS | Size | Mount Point |
 |----|----|----|----|
-| `/dev/sdc1` | N/A | 128 GB | `/home` |
+| `/dev/sdc1` | Kali + ArchLabs | 128 GB | `/home` |
 
 Shrink the Windows partition down to 90112 MB
 
