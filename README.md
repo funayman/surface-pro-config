@@ -88,7 +88,7 @@ Leave the remaining unallocated 8GB for `swap`. That will be created during the 
 ## Step 2: Kali Linux
 Insert the Kali Linux USB and boot into the installer.
 
-Go through the normal installation process, until you get the section on partitioning the drives.
+The mouse/trackpad didn't work with the Surface 4 TypeCover, the whole setup can be done without a mouse though. Go through the normal installation process, until you get the section on partitioning the drives.
 
 In the options for how to handle the disk, choose `Manually`.
 
