@@ -214,36 +214,21 @@ If you're happy without Secure Boot, you can skip this step. The following will 
 
 You can do this on either Linux distro, but I did everything from Kali.
 
-Save Old Key Files
+I tried to make it as painless as possible, execute the scripts from this repo
+
 ```shellsession
-root@kali:~# efi-readvar -v PK -o old_PK.esl
-root@kali:~# efi-readvar -v KEK -o old_KEK.esl
-root@kali:~# efi-readvar -v db -o old_db.esl
-root@kali:~# efi-readvar -v dbx -o old_dbx.esl
+root@kali:~# ./scripts/secure-boot-make-keys.sh
 ```
 
-SCRIPT CREATES KEYS
+**reboot**
 
-Compound Files w/ MSFTの
+Go into BIOS/UEFI and delete keys and enable Secure Boot (this is Setup Mode).
+
+**reboot into Kali**
+
 ```shellsession
-root@kali:~# cat old_KEK.esl KEK.esl > compound_KEK.esl
-root@kali:~# cat old_db.esl db.esl > compound_db.esl
-root@kali:~# sign-efi-sig-list -k PK.key -c PK.crt KEK compound_KEK.esl compound_KEK.auth
-root@kali:~# sign-efi-sig-list -k KEK.key -c KEK.crt db compound_db.esl compound_db.auth
+root@kali:~# ./scripts/secure-boot-install-keys.sh
 ```
-
-REBOOT -> REMOVE OLD KEYS -> REBOOT
-
-ADD KEYS with `efi-updatevar`
-
-SIGN KERNELS
-
-### Add Keys
-Launch KeyTool, you should see on your screen `Platform is in Setup Mode`.
-
-The Allowed Signatures Database (db) -> SYSTEM/keys/DB.esl
-The Key Exchange Key Database (KEK) -> SYSTEM/keys/KEK.esl
-The Platform Key (PK) -> SYSTEM/keys/PK.auth
 
 ### Confirmation
 Once you reboot, you should have Secure Boot Enabled along with the ability to boot into all of your OSes!
