@@ -40,14 +40,16 @@ The Disk Management tool will not allow you to remove it.
 If this is the case, close the Disk Management tool and open a Command Prompt as Administrator and use `DISKPART` to remove the partition.
 Otherwise, skip this step.
 
-```powershell
+```bat
 C:\Windows\system32> diskpart
 
-DISKPART> list volume
-## look for the Volume for the Healthy (Recovery Partition) and use the nuber in the next command
+DISKPART> select disk 0
 
-DISKPART> select volume X
-DISKPART> delete volume override
+DISKPART> list partition
+:: look for the Volume for the Recovery Partition and use the number in the next command
+
+DISKPART> select partition X
+DISKPART> delete partition override
 ```
 
 Reopen the Disk Management tool and extend the Windows partition to reallocate the space the empty space. You could leave it unallocated, but I prefer reallocating and then shrinking the drive.
