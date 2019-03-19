@@ -90,25 +90,24 @@ Insert the Kali Linux USB and boot into the installer.
 
 The mouse/trackpad didn't work with the Surface 4 TypeCover, the whole setup can be done without a mouse though. Go through the normal installation process, until you get the section on partitioning the drives.
 
-In the options for how to handle the disk, choose `Manually`.
+In the *Partition disk* section, choose the `Manual` method.
 
 Find the exFAT partition labled "KALI" from earlier and set the following options:
-- format as `btrfs` (or your prefered file system)
+- format as `ext4` or `btrfs` (or your prefered file system)
 - set mountpoint as `/`
 
-
 Find the microSD card amongst your devices and select the entire device. Format as before:
-- format as `btrfs` (or your prefered file system)
+- format as `ext4` or `btrfs` (or your prefered file system)
 - set mountpoint as `/home`
 
 Select the empty unpartitioned space:
-- format as `swap space`
+- format as `swap`
 
-Commit changes.
+Commit changes to disk.
 
 The installation process should continue as normal.
 
-Restart! You should be greeted with the Kali's GRUB interface. Start Kali and proceede with the post install setup.
+Restart! You should be greeted with the Kali's GRUB interface. Start Kali and proceed with the post install setup.
 
 ### Post Install
 Log in as `root`, upgrade the system, and install the `efitools` and `sbsigntool` packages.
