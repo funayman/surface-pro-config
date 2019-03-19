@@ -73,7 +73,7 @@ Next is to create the partition layout for your drive. Adjust to fit your needs,
 |----|----|----|----|
 | `/dev/sdc1` | Kali + ArchLabs | 128 GB | `/home` |
 
-Shrink the Windows partition down to 90112 MB
+To match the layout in the table above, the amount of space to shrink the Windows partition down by is 90112 MB
 
 Create two partitions for Kali and ArchLabs:
  - New Simple Volume
