@@ -150,7 +150,7 @@ This will ensure that any time the kernel is updated, that script will run, and 
 You can test to make sure that the script is working by reinstalling the kernel. Your version may be different, be sure to check `/lib/modules` to check which versions are available for reinstall.
 
 ```shellsession
-root@kali:~# apt reinstall linux-image---
+root@kali:~# apt reinstall linux-image-4.19.0-kali3-amd64
 ```
 
 #### Remove Grub
@@ -270,6 +270,16 @@ menuentry "Kali Linux" {
 For Arch and Kali, you will need to specify the root device and specify the `PARTUUID` in entry's `options` similar to the config shown above. Replace the `XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX` with your own `PARTUUID`s To find your `PARTUUID` values, use the `lsblk` command
 ```shellsession
 $ lsblk -o NAME,SIZE,TYPE,MOUNTPOINT,PARTUUID
+NAME     SIZE TYPE MOUNTPOINT PARTUUID
+sda    238.5G disk
+├─sda1   200M part /boot      000f9b82-0f3f-4099-b246-5a4d3516c6e6
+├─sda2   128M part            a7071e38-8fd9-4efb-9fdb-5b4ad1941105
+├─sda3 150.2G part            50b39080-a066-4831-bd46-41db09f609a0
+├─sda4    40G part            6eeac1ab-1bcb-4ef0-a36c-a256b4e2f197
+├─sda5    40G part /          f6a9bd85-78b2-4d8c-a852-3a1ea3a86fc7
+└─sda6     8G part [SWAP]     8014899f-61bb-4012-80e8-6bf403bc7a1a
+sdb    119.1G disk
+└─sdb1 119.1G part /home      1060381b-5222-4dcd-8c0a-88a851be879d
 ```
 
 There are a lot of way to [customize rEFInd](http://www.rodsbooks.com/refind/configfile.html) and if you want to spice it up, I recommend going for it. There are also a [few themes](https://github.com/search?q=rEFInd+theme) out there you can use as well. I have my own custom setup at [my github page](https://github.com/funayman/surface-pro-config).
@@ -339,10 +349,10 @@ root@kali:~# cp config/zz-sign-kernel /etc/kernel/postinst.d/zz-sign-kernel
 root@kali:~# chmod 755 /etc/kernel/postinst.d/zz-sign-kernel
 ```
 
-Confirm its working properly by reinstalling the kernel
+Confirm its working properly by reinstalling the kernel (your kernel might be a different version).
 
 ```shellsession
-root@kali:~# apt reinstall linux-image-
+root@kali:~# apt reinstall linux-image-4.19.0-kali3-amd64
 ```
 
 If there were no errors, thats a good sign! Restart the machine and ensure that you can still boot Kali.
