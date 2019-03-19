@@ -198,7 +198,7 @@ $ sudo mv /boot/vmlinuz* /boot/initramfs* /boot/intel-ucode.img /boot/EFI/arch/.
 
 Next, change the default locations for when `mkinitcpio` is called. You can manually change the location yourself or copy the config file in the `config` folder
 ```shellsession
-$ cp config/mkinitcpio-config /etc/mkinitcpio.d/linux.preset
+$ sudo cp config/mkinitcpio-config /etc/mkinitcpio.d/linux.preset
 ```
 
 Lastly, we need to add in [pacman hooks](https://wiki.archlinux.org/index.php/Pacman#Hooks) to sign (more on that later) and move `vmlinuz-linuz` to the `/boot/EFI/arch` directory.
