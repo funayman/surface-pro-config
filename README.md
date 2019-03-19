@@ -16,7 +16,7 @@ First things first, [boot into BIOS/UEFI](https://support.microsoft.com/en-us/he
 Insert the microSD Card and format it (this will be `/home` for the Linux paritions and will be reformatted later)
 
 ## Step 0: Refresh Hard Drive
-This step is optional, and only recommended if you want to remove all the data and start with a clean, prestine Windows installation to work with. **MAKE SURE YOU HAVE ALREADY CREATED A RECOVERY USB FOR YOUR SURFACE**
+This step is optional, and only recommended if you want to remove all the data and start with a clean, prestine Windows installation to work with. **MAKE SURE YOU HAVE ALREADY [CREATED A RECOVERY USB](https://support.microsoft.com/en-us/help/4023512/surface-creating-and-using-a-usb-recovery-drive) FOR YOUR SURFACE**
 
 ### Remove All Partitions
 Use a Linux Live USB and use GParted to remove all partitions. I recommend using the Kali Linux USB you plan to use to install later.
