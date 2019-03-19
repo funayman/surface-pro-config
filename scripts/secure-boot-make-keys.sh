@@ -46,8 +46,8 @@ function make_keys {
   touch noPK.esl
 
   ## combine Microsoft Windows Data
-  cat old_KEK.esl KEK.esl > compound_KEK.esl
-  cat old_db.esl db.esl > compound_db.esl
+  cat backup-keys/old_KEK.esl KEK.esl > compound_KEK.esl
+  cat backup-keys/old_db.esl DB.esl > compound_db.esl
 
   sign-efi-sig-list -t "$(date --date='1 second' +'%Y-%m-%d %H:%M:%S')" -k PK.key -c PK.crt PK PK.esl PK.auth
   sign-efi-sig-list -t "$(date --date='1 second' +'%Y-%m-%d %H:%M:%S')" -k PK.key -c PK.crt PK noPK.esl noPK.auth
