@@ -182,7 +182,7 @@ ArchLabs Linux allows you to choose a bootloader of your choice. Since the end g
 When choosing a username, **do not** use the same one that is used for Kali (if you created a regular user on Kali). Make sure to have different user names on each Linux installation. Otherwise it will cause conflicts with config files and software versions.
 
 ### Post Installation
-Once rebooted, you should be greeted with the default config for the rEFInd bootloader. You'll notice that Kali Linux is not listed on there. Thats fine, we will fix everything in the following section.
+Once rebooted, you should be greeted with the default config for the rEFInd bootloader. Hopefully you'll see 3 options: `Windows`, `vmlinuz-linux`, `\EFI\kali\vmlinuz`. Select `vmlinuz-linux` to boot into Arch.
 
 Login and update the system (should be up to date from install), and install the `efitools` and `sbsigntools` packages
 ```shellsession
