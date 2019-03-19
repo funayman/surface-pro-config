@@ -85,6 +85,9 @@ Create two partitions for Kali and ArchLabs:
 
 Leave the remaining unallocated 8GB for `swap`. That will be created during the Kali installation.
 
+### Install WinBtrfs (*optional*)
+If you plan on using btrfs as your primary partition format, be sure to install [WinBtrfs](https://github.com/maharmstone/btrfs). Its still under active development, but good enough for day-to-day tasks and viewing your file systems on Windows. There is a very large NOTICE in the Readme file though. Decide if its worth the risk.
+
 ## Step 2: Kali Linux
 Insert the Kali Linux USB and boot into the installer.
 
