@@ -249,7 +249,7 @@ menuentry "Windows" {
 menuentry "Arch Linux" {
     loader   /EFI/arch/vmlinuz-linux
     initrd   /EFI/arch/initramfs-linux.img
-    options  "root=PARTUUID=f6a9bd85-78b2-4d8c-a852-3a1ea3a86fc7 rw add_efi_memmap"
+    options  "root=PARTUUID=XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX rw add_efi_memmap"
     submenuentry "Boot using fallback initramfs" {
         initrd /EFI/archinitramfs-linux-fallback.img
     }
@@ -262,14 +262,12 @@ menuentry "Arch Linux" {
 menuentry "Kali Linux" {
     loader   /EFI/kali/vmlinuz
     initrd   /EFI/kali/initrd.img
-    options  "root=PARTUUID=6eeac1ab-1bcb-4ef0-a36c-a256b4e2f197 rw add_efi_memmap"
+    options  "root=PARTUUID=XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX rw add_efi_memmap"
     enabled
 }
 ```
 
-For Arch and Kali, you will need to specify the root device and specify the `PARTUUID` in entry's `options` similar to the config shown above.
-
-To find your `PARTUUID` values, use the `lsblk` command
+For Arch and Kali, you will need to specify the root device and specify the `PARTUUID` in entry's `options` similar to the config shown above. Replace the `XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX` with your own `PARTUUID`s To find your `PARTUUID` values, use the `lsblk` command
 ```shellsession
 $ lsblk -o NAME,SIZE,TYPE,MOUNTPOINT,PARTUUID
 ```
