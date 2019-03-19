@@ -140,12 +140,18 @@ We will need to keep the kernel for each installed Linux system organized as to 
 root@kali:~# mkdir -pv /boot/efi/EFI/kali
 ```
 
-To ensure that the kernel is kept up to date, copy `zz-sign-and-move-kernel` to the `postinst.d` folder 
+To ensure that the kernel is kept up to date, copy `zz-move-kernel` to the `postinst.d` folder 
 ```shellsession
-root@kali:~# cp config/zz-sign-and-move-kernel /etc/kernel/postinst.d/zz-sign-and-move-kernel
-root@kali:~# chmod 755 /etc/kernel/postinst.d/zz-sign-and-move-kernel
+root@kali:~# cp config/zz-move-kernel /etc/kernel/postinst.d/zz-move-kernel
+root@kali:~# chmod 755 /etc/kernel/postinst.d/zz-move-kernel
 ```
-This will sign the new kernel with your MOK (more on that later) and place it in the correct directory.
+This will ensure that any time the kernel is updated, that script will run, and place the kernel in the correct directory.
+
+You can test to make sure that the script is working by reinstalling the kernel. Your version may be different, be sure to check `/lib/modules` to check which versions are available for reinstall.
+
+```shellsession
+root@kali:~# apt reinstall linux-image---
+```
 
 #### Remove Grub
 The system will be unbootable until another bootloader is installed, but that will be taken care of come ArchLabs.
@@ -324,3 +330,37 @@ Once you reboot, you should have Secure Boot Enabled along with the ability to b
 If you go into the BIOS/UEFI, you should see "Secure Boot Enabled".
 
 ### Ensuring Kernel Updates Get Signed
+Time to future proof the machine. Any time there is a kernel upgrade, it needs to be signed with the keys you made previously. If all the key files are still in the EFI System Partition from the `secure-boot-install.sh` script, then everything is ready to go.
+
+## Kali Linux
+You will need to replace the previously installed `zz-move-kernel` script with one that will sign the kernel when upgrading.
+
+```shellsession
+root@kali:~# rm /etc/kernel/postinst.d/zz-move-kernel
+root@kali:~# cp config/zz-sign-kernel /etc/kernel/postinst.d/zz-sign-kernel
+root@kali:~# chmod 755 /etc/kernel/postinst.d/zz-sign-kernel
+```
+
+Confirm its working properly by reinstalling the kernel
+
+```shellsession
+root@kali:~# apt reinstall linux-image-
+```
+
+If there were no errors, thats a good sign! Restart the machine and ensure that you can still boot Kali.
+
+## ArchLabs Linux
+A similar approach will be taken for Arch Linux. The hook previously installed needs to be replaced with a `-sign` version.
+
+```shellsession
+$ sudo rm /usr/share/libalpm/hooks/80-linux-move.hook
+$ sudo cp config/80-linux-sign.hook /usr/share/libalpm/hooks/80-linux-sign.hook
+```
+
+Confirm its working properly by reinstalling the `linux` package
+
+```shellsession
+$ sudo pacman -Sy linux
+```
+
+Again, no errors is a good start. Reboot the machine and confirm that rEFInd can still boot into ArchLabs.
