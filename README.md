@@ -226,6 +226,18 @@ Go into BIOS/UEFI and delete keys and enable Secure Boot (this is Setup Mode).
 
 **reboot into Kali**
 
+Before installing the keys, the `secure-boot-install-keys.sh` script has hard-coded locations for the kernels. If you've been making changes along the way, adjust the following accordingly:
+```shell
+# edit to your needs
+declare -a BINARIES=(
+"$MOUNT/EFI/kali/vmlinuz"
+"$MOUNT/EFI/arch/vmlinuz-linux"
+"$MOUNT/EFI/refind/refind_x64.efi"
+)
+```
+
+Then run the script to install your keys and sign your kernels.
+
 ```shellsession
 root@kali:~# ./scripts/secure-boot-install-keys.sh
 ```
