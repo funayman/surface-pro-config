@@ -25,7 +25,7 @@ Use a Linux Live USB and use GParted to remove all partitions. I recommend using
 Follow Microsoft's guide to use [Microsoft Surface Data Eraser](https://docs.microsoft.com/en-us/surface/microsoft-surface-data-eraser) to repartition your hard drive. This will allow you to reinstall Windows on a clean hard drive and it will create the EFI system partition for you.
 
 ### Reinstall Windows
-Use your RECOVERY USB to reinstall Windows. Select `Troubleshoot` -> `Install from Disk` -> `Windows 10`.
+Use your RECOVERY USB to reinstall Windows. Select `Troubleshoot` -> `Recover from a drive` -> `Just remove my files` -> `Recover`
 
 After you've gone through the installation process, make sure you aquire all the latest updates. This can take A LOOOONG TIME.
 
