@@ -271,6 +271,7 @@ menuentry "Kali Linux" {
 For Arch and Kali, you will need to specify the root device and specify the `PARTUUID` in entry's `options` similar to the config shown above. Replace the `XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX` with your own `PARTUUID`s To find your `PARTUUID` values, use the `lsblk` command
 ```shellsession
 $ lsblk -o NAME,SIZE,TYPE,MOUNTPOINT,PARTUUID
+
 NAME     SIZE TYPE MOUNTPOINT PARTUUID
 sda    238.5G disk
 ├─sda1   200M part /boot      000f9b82-0f3f-4099-b246-5a4d3516c6e6
