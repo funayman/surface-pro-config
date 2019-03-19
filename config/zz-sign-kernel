@@ -7,7 +7,8 @@ echo "Mouting EPS to /mnt"
 mount /dev/sda1 /mnt
 
 echo "Copying files to /boot/EFI/kali"
-cp /vmlinuz /initrd.img /mnt/EFI/kali/.
+sbsign --key /mnt/keys/DB.key --cert /mnt/keys/DB.crt --output /mnt/EFI/kali/vmlinuz /vmlinuz
+cp -v /initrd.img /mnt/EFI/kali/.
 
 echo "Cleaning up"
 umount -R /mnt
