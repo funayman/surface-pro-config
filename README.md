@@ -121,7 +121,7 @@ root@kali:~# apt update && apt upgrade --yes && apt install efitools sbsigntool
 #### Change root User Home
 Open a terminal and copy the `/root` folder to the `/home` directory.
 ```shellsession
-root@kali:~# cp -r /root /home/.
+root@kali:~# cp -vr /root /home/.
 ```
 
 Now we need to tell the system that the root users home directory has changed.
