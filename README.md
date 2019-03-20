@@ -3,7 +3,7 @@ files needed to set up a ballin surface pro 3
 
 the following guide was used to tripple boot Windows 10, [Kali Linux](https://www.kali.org/), and [ArchLabs Linux](https://archlabslinux.com/) on a Surface Pro 3
 
-# Installation
+# Installation Prerequisites
 You'll need the following:
  - USB with Kali Linux
  - USB with ArchLabs Linux
