@@ -196,7 +196,7 @@ $ sudo pacman -Syyu efitools sbsigntools
 Similar to the setup for Kali, the linux kernel needs to be move/organized in order to not conflict with other distributions.
 ```shellsession
 $ sudo mkdir -pv /boot/EFI/arch
-$ sudo mv /boot/vmlinuz* /boot/initramfs* /boot/intel-ucode.img /boot/EFI/arch/.
+$ sudo mv /boot/vmlinuz* /boot/initramfs* /boot/intel-ucode.img /boot/amd-ucode.img /boot/refind_linux.confg /boot/EFI/arch/.
 ```
 
 Next, change the default locations for when `mkinitcpio` is called. You can manually change the location yourself or copy the config file in the `config` folder
