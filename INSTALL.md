@@ -220,13 +220,23 @@ $ ls /boot/EFI/arch
 initramfs-linux-fallback.img initramfs-linux.img vmlinuz-linux
 ```
 
-### Fix Kali Linux
-
-- mount `/dev/sda4` to `/mnt`
-- use `lsblk` to view PARTUUIDs
-- update `/mnt/etc/fstab`
-
 Don't restart your computer yet, there are still a few issues with rEFInd that need to be taken care of.
+
+### Fix Booting
+#### Fixing Kali Linux
+
+- copy `/boot/EFI/arch/refind_linux.conf` to `/boot/EFI/kali/refind_linux.conf`
+  - Remove the second line about "Fallback"
+  - Rename to `Kali Linux`
+  - Update the `PARTUUID` in the file with Kali Linux's root partition (most likely `/dev/sda3` if youve been following along)
+- mount `/dev/sda4` to `/mnt`
+- use `lsblk` to view UUIDs
+- update `/mnt/etc/fstab` to represent the swap partition (ArchLabs changed the partition id)
+
+#### Fixing ArchLabs Linux
+Open the `/boot/EFI/arch/refind_linux.conf`
+Change the `initrd` options to have a prepended `/EFI/arch` in their path.
+You can now reboot without a problem
 
 ## Step 4: Clean Up UEFI and Configuring rEFInd
 
