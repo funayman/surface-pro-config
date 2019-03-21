@@ -220,6 +220,12 @@ $ ls /boot/EFI/arch
 initramfs-linux-fallback.img initramfs-linux.img vmlinuz-linux
 ```
 
+### Fix Kali Linux
+
+- mount `/dev/sda4` to `/mnt`
+- use `lsblk` to view PARTUUIDs
+- update `/mnt/etc/fstab`
+
 Don't restart your computer yet, there are still a few issues with rEFInd that need to be taken care of.
 
 ## Step 4: Clean Up UEFI and Configuring rEFInd
