@@ -240,15 +240,6 @@ You can now reboot without a problem
 
 ## Step 4: Clean Up UEFI and Configuring rEFInd
 
-rEFInd is great and finding and displaying bootable images. Unfortuantely, the current set up doesn't allow for our Linux operating systems to load properly. You'll notice if you restarted your Surface and tried to launch ArchLabs that you are dropped into a terminal. If this happens you'll have to mount the drive manually.
-
-```shell
-# make sure to choose your correct device! 
-mount /dev/sda5 /new_root
-exit
-```
-And it should continue to boot as normal.
-
 ### Cleaning Up UEFI and Boot Order
 ```shellsession
 $ sudo efibootmrg
