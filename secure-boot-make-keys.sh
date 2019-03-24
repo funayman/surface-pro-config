@@ -65,12 +65,14 @@ function reboot_and_delete {
   echo "Make sure to delete, and then re-enable Secure Boot to put it into"
   echo "Setup Mode. This is necessary for the next step. After run the next script."
   echo ""
-  echo "Your machine will automatically reboot (Press CTRL-Z to cancel) in"
+  echo -n "Your machine will automatically reboot (Press CTRL-Z to cancel) in"
   for i in {10..1}
   do
     echo -n ...$i
     sleep 1
   done
+  echo ""
+  echo ""
   echo "REBOOT!"
   reboot
 }
