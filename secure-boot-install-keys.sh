@@ -43,6 +43,7 @@ function sign_binaries {
 
 
 init
+save_keys
 write_to_efi
 sign_binaries
 
